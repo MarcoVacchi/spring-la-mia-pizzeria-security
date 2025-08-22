@@ -23,6 +23,7 @@ public class Role {
     private Integer id;
 
     @NotBlank(message = "name cannot be blank, empty or null")
+    private String name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     @JsonBackReference
@@ -52,7 +53,5 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
-
-    private String name;
 
 }

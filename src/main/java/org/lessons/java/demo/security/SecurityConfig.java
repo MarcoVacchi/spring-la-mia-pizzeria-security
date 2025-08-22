@@ -1,7 +1,6 @@
 package org.lessons.java.demo.security;
 
 import org.springframework.security.config.Customizer;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,9 +26,9 @@ public class SecurityConfig {
                         .requestMatchers("/user").hasAuthority("USER")
                         .requestMatchers("/admin").hasAuthority("ADMIN")
                         .requestMatchers("/", "/**").permitAll())
-                .formLogin(Customizer.withDefaults()) // login form default
-                .logout(Customizer.withDefaults()) // logout default
-                .exceptionHandling(Customizer.withDefaults()); // gestione eccezioni default
+                .formLogin(Customizer.withDefaults())
+                .logout(Customizer.withDefaults())
+                .exceptionHandling(Customizer.withDefaults());
 
         return http.build();
     }
@@ -38,7 +37,14 @@ public class SecurityConfig {
     @SuppressWarnings("deprecation")
     DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailService());
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
+    }
+
+    @Bean
+    DatabaseUserDetailService userDetailService() {
+        return new DatabaseUserDetailService();
     }
 
     @Bean

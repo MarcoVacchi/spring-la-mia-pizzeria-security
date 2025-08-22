@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
 <head>
@@ -15,7 +15,8 @@
     <main>
         <h1>Pizze</h1>
         <div>
-            <a class="me-auto btn btn-primary btn-sm" th:href="@{pizze/create}">Create a new Pizza</a>
+            <a class="me-auto btn btn-primary btn-sm" sec:authorize="hasAuthority('ADMIN')"
+                th:href="@{pizze/create}">Create a new Pizza</a>
         </div>
 
         <div class="container">
@@ -33,8 +34,8 @@
                         <th scope="col">Price</th>
                         <th scope="col">Sales</th>
                         <th scope="col">Detail</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col" sec:authorize="hasAuthority('ADMIN')">Edit</th>
+                        <th scope="col" sec:authorize="hasAuthority('ADMIN')">Delete</th>
 
                     </tr>
                 </thead>
@@ -52,7 +53,8 @@
                         <td><a class="btn btn-outline-primary btn-sm" th:href="@{/pizze/{id}/sale(id=*{id})}">Sales</td>
                         <td><a class="btn btn-primary btn-sm" th:href="@{/pizze/{id}(id=*{id})}">Detail</td>
                         <!--Dettaglio singola pizza-->
-                        <td><a class="btn btn-success btn-sm" th:href="@{/pizze/edit/{id}(id=*{id})}">Edit</td>
+                        <td sec:authorize="hasAuthority('ADMIN')"><a class="btn btn-success btn-sm"
+                                th:href="@{/pizze/edit/{id}(id=*{id})}">Edit</td>
 
                         <!--NO MODALE-->
                         <!-- <td>
@@ -61,7 +63,7 @@
                             </form>
                         </td> -->
                         <!--CON MODALE-->
-                        <td>
+                        <td sec:authorize="hasAuthority('ADMIN')">
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                 th:data-bs-target="'#delete-modal-' + *{id}">
                                 Delete
