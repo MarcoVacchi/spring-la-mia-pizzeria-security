@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzeria</title>
+</head>
+
+<body>
+
+    <th:block th:replace="~{fragment :: bootstrap}"></th:block>
+    <th:block th:replace="~{fragment :: navBar}"></th:block>
+
+    <div class="col-8 container mx-auto">
+        <div class="card mb-5" style="max-width: 500px">
+
+            <div th:if="${sale == null}">
+                <h1>Nessuna promozione trovata</h1>
+            </div>
+
+            <div th:if="${sale != null and sale.pizze == null}">
+                <h1>Nessuna pizza selezionata</h1>
+            </div>
+
+            <div th:if="${sale != null and sale.pizze != null}">
+                <h1 th:text="${sale.pizze.name}">Nome pizza</h1>
+                <img th:src="@{${sale.pizze.pick}}" alt="Pizza image" style="width: 100%;">
+                <div class="card-body">
+                    <h3>Ingredienti:</h3>
+                    <h4 class="card-text" th:text="${sale.pizze.description}">Descrizione pizza</h4>
+                    <a href="#" class="btn btn-primary">
+                        <span th:text="${sale.pizze.price}">Prezzo</span>
+                        <span th:text="${sale.pizze.symbol}">€</span>
+                    </a>
+                </div>
+            </div>
+
+
+            <form th:action="${edit}? @{/sales/edit/{id}(id=${sale.id})} : @{/sales/create}" th:object="${sale}"
+                method="post" class="mb-5">
+                <input type="hidden" th:field="*{pizze}">
+
+                <div class="mb-3">
+                    <label class="form-label" for="startSale">Titolo:</label>
+                    <input class="form-control" type="text" id="title" th:field="*{title}" th:errorClass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}">
+                        <ul>
+                            <li th:each="error : ${#fields.errors('title')}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="startSale">Inizio promozione:</label>
+                    <input class="form-control" type="date" id="startSale" th:field="*{startSale}"
+                        th:errorClass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('startSale')}">
+                        <ul>
+                            <li th:each="error : ${#fields.errors('startSale')}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="endSale">Fine promozione:</label>
+                    <input class="form-control" type="date" id="endSale" th:field="*{endSale}"
+                        th:errorClass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('endSale')}">
+                        <ul>
+                            <li th:each="error : ${#fields.errors('endSale')}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Pulsante di invio -->
+                <button type="submit" class="btn btn-primary">Crea Promozione</button>
+            </form>
+        </div>
+
+</body>
+
+</html>
