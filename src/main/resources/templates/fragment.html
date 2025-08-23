@@ -24,10 +24,17 @@
                             <a class="nav-link fw-bold" href="http://127.0.0.1:8080/pizze">Pizze</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-bold" href="http://127.0.0.1:8080/ingredients">Ingredients</a>
+                            <a class="nav-link fw-bold" href="http://127.0.0.1:8080/ingredients"
+                                sec:authorize="hasAuthority('ADMIN')">Ingredients</a>
                         </li>
                     </ul>
                 </div>
+            </div>
+
+            <div class="user-info">
+                Logged user: <span sec:authentication="name" class="fw-bold me-2"> </span>
+                Role <span sec:authentication="principal.authorities" class="fst-italic me-2"></span>
+                <a class="btn btn-sm btn-outline-primary" href="/logout"> Sign out</a>
             </div>
         </nav>
     </th:block>
